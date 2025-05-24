@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Love Letter Animation</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="riveCanvas" width="500" height="500"></canvas>
+
+  <script src="https://cdn.rive.app/0.11.0/rive.js"></script>
+  <script>
+    const rive = new rive.Rive({
+      src: "https://krishnasudhamusu.github.io/LetterDigital/love-letter-final.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      stateMachines: ["State Machine 1"],
+      onLoad: () => {
+        const inputs = rive.stateMachineInputs("State Machine 1");
+
+        document.getElementById("riveCanvas").addEventListener("click", () => {
+          const seal = inputs.find(i => i.name === "SealClicked");
+          if (seal) seal.fire();
+        });
+
+        document.getElementById("riveCanvas").addEventListener("mousedown", () => {
+          const drag = inputs.find(i => i.name === "LBM down");
+          if (drag?.type === "boolean") {
+            drag.value = true;
+            setTimeout(() => (drag.value = false), 500);
+          }
+        });
+
+        window.breakGlass = () => {
+          const trigger = inputs.find(i => i.name === "BreakGlass");
+          if (trigger) trigger.fire();
+        };
+
+        window.toggleChill = () => {
+          const toggle = inputs.find(i => i.name === "ToggleCHill");
+          if (toggle?.type === "boolean") {
+            toggle.value = !toggle.value;
+          }
+        };
+      }
+    });
+  </script>
+</body>
+</html>
